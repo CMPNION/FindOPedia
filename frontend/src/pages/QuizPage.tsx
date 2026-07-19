@@ -20,10 +20,7 @@ export function QuizPage() {
 
     quizApi
       .getOrGenerateQuestions(slug, provider, key)
-      .then((res) => {
-        console.log('Question IDs:', res.questions.map((q) => q.id))
-        setQuestions(res.questions)
-      })
+      .then((res) => setQuestions(res.questions))
       .catch(async (err: unknown) => {
         const msg = err instanceof Error ? err.message : 'Failed'
 

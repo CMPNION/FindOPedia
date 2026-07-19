@@ -96,7 +96,11 @@ func (uc *UseCase) GetOrGenerateQuestions(ctx context.Context, slug string, user
 		return nil, nil, err
 	}
 
-	return generated, nil, nil
+	saved, err := uc.quiz.FindQuestionsByArticle(ctx, article.ID)
+	if err != nil {
+		return nil, nil, err
+	}
+	return saved, nil, nil
 }
 
 type AttemptResult struct {
