@@ -4,11 +4,12 @@ import (
 	"bytes"
 	"context"
 	"encoding/json"
-	"findopedia/internal/entity"
-	"findopedia/internal/usecase/port"
 	"fmt"
 	"io"
 	"net/http"
+
+	"findopedia/internal/entity"
+	"findopedia/internal/usecase/port"
 )
 
 type Gemini struct {
@@ -32,12 +33,13 @@ func (g *Gemini) GenerateQuiz(ctx context.Context, req port.QuizRequest) ([]enti
 		},
 	})
 
-	url := "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=" + g.apiKey
+	url := "https://generativelanguage.googleapis.com/v1beta/models/gemini-flash-latest:generateContent"
 	httpReq, err := http.NewRequestWithContext(ctx, http.MethodPost, url, bytes.NewReader(body))
 	if err != nil {
 		return nil, err
 	}
 	httpReq.Header.Set("Content-Type", "application/json")
+	httpReq.Header.Set("X-goog-api-key", g.apiKey)
 
 	resp, err := http.DefaultClient.Do(httpReq)
 	if err != nil {
